@@ -1,1 +1,0 @@
-{"virtualbox":{"/vagrant":{"owner":"vagrant","group":"www-data","mount_options":["dmode=777,fmode=777"],"guestpath":"/vagrant","hostpath":"C:/Users/Apcros/Documents/GitHub/Hubble/Server","disabled":false,"__vagrantfile":true}}}
