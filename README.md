@@ -6,12 +6,12 @@ This is basically a server with an API and the differents companions (clients) p
 All of this tool is still very much work in progress
 
 ## Server
-The server use **Laravel 5** and a DockerFile / Docker Image *will* be provided
+The server use **Laravel 5** and a VagrantFile is provided
 - Version : **Not available yet**
 
 ##### Tools/Libs used :
 - Laravel 5
-- Docker
+- Vagrant
 - MaterializeCSS
 
 ## Windows Client
