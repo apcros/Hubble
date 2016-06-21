@@ -2,12 +2,13 @@
   <html>
     <head>
       <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="{{ asset('css/materialize.min.css')}}"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="{{ asset('css/materialize.min.css') }}"  media="screen,projection"/>
+      <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
       <meta charset="UTF-8"/>
       <title>@yield('title')</title>
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-
+      <script type="text/javascript" src="{{ asset('js/materialize.min.js') }}"></script>
     </head>
     <body>
     </body>
@@ -28,8 +29,8 @@
           </div>
           <div class="footer-copyright">
             <div class="container">
-            © 2016 Jules
-            <a class="white-text right">Version : <b>WIP</b></a>
+            © 2016 Apcros
+            <a class="white-text right"><b>PRE-ALPHA</b> 0.01</a>
             </div>
           </div>
       </footer>
