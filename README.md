@@ -7,12 +7,16 @@ All of this tool is still very much work in progress
 
 ## Server
 The server use **Laravel 5** and a VagrantFile is provided
+
+The SQL script used during provisionning is hubble_schema.sql and the bash provisioning script is initialize.sh
 - Version : **Not available yet**
 
 ##### Tools/Libs used :
 - Laravel 5
+- PostgreSQL
 - Vagrant
 - MaterializeCSS
+- FontAwesome
 
 ## Windows Client
 The Windows Client use C# and the Windows API
