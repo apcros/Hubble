@@ -28,9 +28,9 @@ class Kernel extends HttpKernel
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
         ],
-
+//            \App\Http\Middleware\VerifyCsrfToken::class, <- Removing that for the api
+// TODO : Better solution would be to filter certain routes
         'api' => [
             'throttle:60,1',
         ],
