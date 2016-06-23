@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -41,11 +42,12 @@ class Device extends Controller
                 [
                     'uuid'          => $device_id,
                     'name'          => $device_name,
-                    'last_updated'  => time(),
                 ]
                 );
             return $device_id;
 
+        } else {
+            return "ERROR";
         }
     }   
 
@@ -53,7 +55,17 @@ class Device extends Controller
         This will delete the device
     */
     public function del($id, Request $r) {
+        DB::table("DEVICE")->where("uuid",$id)->delete();
+    }
 
+    public function listDevices() {
+        $devices = DB::table("DEVICE")->get();
+        return view("ajax.device-list-config",["devices" => $devices]);
+    }
+
+    public function showData($id) {
+        $device = DB::table("DEVICE")->where('uuid',$id)->first();
+        return json_encode($device->data);
     }
 
     //TODO

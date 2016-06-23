@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,12 +29,13 @@ namespace Hubble
             while (true)
             {
                 Console.Clear();
-                byte[] json_to_submit = System.Text.Encoding.UTF8.GetBytes(ae.getJson());
+                string json_to_submit = ae.getJson();
                 using (var client = new System.Net.WebClient())
                 {
                     try
                     {
-                        client.UploadData(mc.getCfg("apiEntry") + "api/v1/devices/" + mc.getCfg("device_id") + "/latest", "PUT", json_to_submit);
+                        client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                        client.UploadData(mc.getCfg("apiEntry") + "api/v1/devices/" + mc.getCfg("device_id") + "/latest", System.Text.Encoding.UTF8.GetBytes(json_to_submit));
                     } catch (Exception e)
                     {
                         Console.WriteLine(e.StackTrace);

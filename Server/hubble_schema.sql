@@ -31,25 +31,27 @@ CREATE SEQUENCE "USER_id_seq"
 ALTER TABLE public."USER_id_seq" OWNER TO hubble_user;
 ALTER SEQUENCE "USER_id_seq" OWNED BY "USER"."id";
 ALTER TABLE ONLY "USER" ADD CONSTRAINT "USER_pkey" PRIMARY KEY ("id");
+ALTER TABLE ONLY "USER" ALTER COLUMN "id" SET DEFAULT nextval('"USER_id_seq"'::regclass);
 
 CREATE TABLE "DEVICE" (
   "id" integer NOT NULL,
   "uuid" text NOT NULL,
-  "name" text,
+  "name" text NOT NULL,
   "data" json,
   "last_updated" time
  );
- ALTER TABLE public."DEVICE" OWNER TO hubble_user;
- CREATE SEQUENCE "DEVICE_id_seq"
+ALTER TABLE public."DEVICE" OWNER TO hubble_user;
+CREATE SEQUENCE "DEVICE_id_seq"
      START WITH 1
      INCREMENT BY 1
      NO MINVALUE
      NO MAXVALUE
      CACHE 1;
- ALTER TABLE public."DEVICE_id_seq" OWNER TO hubble_user;
- ALTER SEQUENCE "DEVICE_id_seq" OWNED BY "DEVICE"."id";
- ALTER TABLE ONLY "DEVICE" ADD CONSTRAINT "DEVICE_pkey" PRIMARY KEY ("id");
- 
+ALTER TABLE public."DEVICE_id_seq" OWNER TO hubble_user;
+ALTER SEQUENCE "DEVICE_id_seq" OWNED BY "DEVICE"."id";
+ALTER TABLE ONLY "DEVICE" ADD CONSTRAINT "DEVICE_pkey" PRIMARY KEY ("id");
+ALTER TABLE ONLY "DEVICE" ALTER COLUMN "id" SET DEFAULT nextval('"DEVICE_id_seq"'::regclass);
+
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
 REVOKE ALL ON SCHEMA public FROM postgres;
 GRANT ALL ON SCHEMA public TO postgres;
