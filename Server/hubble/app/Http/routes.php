@@ -13,9 +13,7 @@ Route::get('/ajax/devices/list','Device@listDevices');
 Route::post('/ajax/devices/add','Device@add');
 Route::delete('/ajax/devices/{device_uuid}/delete','Device@del');
 
-Route::get('/', function () {
-    return view('overview');
-});
+Route::get('/','Device@listDevicesCard');
 
 Route::get('/config',function() {
 	return view('config');

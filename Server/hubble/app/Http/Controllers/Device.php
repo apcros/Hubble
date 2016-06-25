@@ -63,6 +63,15 @@ class Device extends Controller
         return view("ajax.device-list-config",["devices" => $devices]);
     }
 
+    public function listDevicesCard() {
+        $devices = DB::table("DEVICE")->get();
+
+        foreach ($devices as $key => $device) {
+           $devices[$key]->data = json_decode($device->data);
+        }
+        return view("overview",["devices" => $devices]);
+    }
+
     public function showData($id) {
         $device = DB::table("DEVICE")->where('uuid',$id)->first();
         return json_encode($device->data);
