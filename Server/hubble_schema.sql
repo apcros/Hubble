@@ -19,7 +19,7 @@ CREATE TABLE "USER" (
   "nickname" text,
   "email" text NOT NULL,
   "rank" integer,
-  "last_logged" time
+  "last_logged" timestamp
   );
 ALTER TABLE public."USER" OWNER TO hubble_user;
 CREATE SEQUENCE "USER_id_seq"
@@ -38,7 +38,7 @@ CREATE TABLE "DEVICE" (
   "uuid" text NOT NULL,
   "name" text NOT NULL,
   "data" json,
-  "last_updated" time
+  "last_updated" timestamp
  );
 ALTER TABLE public."DEVICE" OWNER TO hubble_user;
 CREATE SEQUENCE "DEVICE_id_seq"
