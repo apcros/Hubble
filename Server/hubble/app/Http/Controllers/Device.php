@@ -93,6 +93,14 @@ class Device extends Controller
         return json_encode($device->data);
     }
 
+    public function listDevicesRaw() {
+        $devices = DB::table("DEVICE")->get();
+        $devices_array = array();
+        foreach ($devices as $key => $device) {
+            $devices_array[] = $device->uuid;
+        }
+        return json_encode($devices_array);
+    }
     //TODO
     public function exist($id) {
         return true;

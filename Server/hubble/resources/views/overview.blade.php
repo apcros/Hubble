@@ -72,6 +72,37 @@
 	    	$('.collapsible').collapsible();
 	    });
 
+	    window.setInterval(function(){
+	    	updateDevicesList();
+	    },1000);
+
+	 	function updateDevicesList() {
+	 		$.get("/api/v1/devices/list", function(data){
+	 			var devices = JSON.parse(data);
+	 			console.log(devices);
+	 			for (var i = 0; i < devices.length; i++) {
+	 				var de = devices[i];
+	 				updateOrCreateDevice(de);
+	 			};
+	 		})
+	 	}
+
+	 	function updateOrCreateDevice(uuid) {
+			$.get("/api/v1/devices/"+uuid+"/latest",function(data) {
+				var dev_json = JSON.parse(data);
+				console.log(dev_json);
+	 			if($("#"+uuid).length){
+	 			//Create the device
+	 			} else {
+	 			//Update
+	 			}
+	 		});
+	 	}
+
+	 	function removeDevice(uuid) {
+
+	 	}
+
 	  </script>
 	@endforeach
 @endsection
