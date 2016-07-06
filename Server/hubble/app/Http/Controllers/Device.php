@@ -108,12 +108,15 @@ class Device extends Controller
 
     public function cleanDeviceData($device) {
         $device->data = json_decode($device->data); //This is to allow blade template to access differents part of the json
+         $device->timeout_since = 0;
+        if(isset($device->data)) {
         $device->timeout_since = $this->calculateTimout($device);
 
         $device->data->ram_percent = round(100 - (($device->data->ram_free / $device->data->ram_total)*100));
 
         foreach ($device->data->drives as $key => $drive) {
            $device->data->drives[$key]->percent = round(100 - (($drive->free_space / $drive->total_space)*100));
+        }
         }
         return $device;
     }
