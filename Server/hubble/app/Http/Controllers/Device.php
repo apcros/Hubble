@@ -90,7 +90,7 @@ class Device extends Controller
 
     public function showData($id) {
         $device = DB::table("DEVICE")->where('uuid',$id)->first();
-        return json_encode($device->data);
+        return $device->data;
     }
 
     public function listDevicesRaw() {

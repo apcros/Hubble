@@ -41,16 +41,16 @@
 	        <br>
 
 	        <p>
-	        	<b>CPU Usage ({{ isset($device->data->cpu_usage) ? $device->data->cpu_usage : '' }}%)</b>
+	        	<b>CPU Usage (<b id="{{$device->uuid}}_cputxt">{{ isset($device->data->cpu_usage) ? $device->data->cpu_usage : '' }}%</b>)</b>
 				<div class="progress blue lighten-3">
-		      		<div class="determinate blue" style="width: {{ isset($device->data->cpu_usage) ? $device->data->cpu_usage : '' }}%"></div>
+		      		<div id="{{$device->uuid}}_cpubar"class="determinate blue" style="width: {{ isset($device->data->cpu_usage) ? $device->data->cpu_usage : '' }}%"></div>
 		  		</div>
 	        </p>
 	        <p>
-	        	<b>RAM Usage ({{ isset($device->data->ram_percent) ? $device->data->ram_percent : '' }}%)</b>
-	        	{{ isset($device->data->ram_free) ? $device->data->ram_free : '?' }} MB free on {{ isset($device->data->ram_total) ? $device->data->ram_total : '?' }} MB
+	        	<b>RAM Usage (<b id="{{$device->uuid}}_ramtxt">{{ isset($device->data->ram_percent) ? $device->data->ram_percent : '' }}%</b>)</b>
+	        	<i id="{{$device->uuid}}_ramfree">{{ isset($device->data->ram_free) ? $device->data->ram_free : '?' }}</i> MB free on <i id="{{$device->uuid}}_ramtotal">{{ isset($device->data->ram_total) ? $device->data->ram_total : '?' }}</i> MB
 				<div class="progress blue lighten-3">
-		      		<div class="determinate blue" style="width: {{ isset($device->data->ram_percent) ? $device->data->ram_percent : '' }}%"></div>
+		      		<div id="{{$device->uuid}}_rammbar" class="determinate blue" style="width: {{ isset($device->data->ram_percent) ? $device->data->ram_percent : '' }}%"></div>
 		  		</div>
 	        </p>
 	        <br>
@@ -79,7 +79,6 @@
 	 	function updateDevicesList() {
 	 		$.get("/api/v1/devices/list", function(data){
 	 			var devices = JSON.parse(data);
-	 			console.log(devices);
 	 			for (var i = 0; i < devices.length; i++) {
 	 				var de = devices[i];
 	 				updateOrCreateDevice(de);
@@ -89,12 +88,23 @@
 
 	 	function updateOrCreateDevice(uuid) {
 			$.get("/api/v1/devices/"+uuid+"/latest",function(data) {
-				var dev_json = JSON.parse(data);
-				console.log(dev_json);
+				var dev_json = $.parseJSON(data);
 	 			if($("#"+uuid).length){
 	 			//Create the device
 	 			} else {
 	 			//Update
+	 				$("#"+uuid+"_cputxt").html(dev_json.cpu_usage+"%");
+	 				$("#"+uuid+"_cpubar").width(dev_json.cpu_usage+"%");
+
+	 				var ramTot = dev_json.ram_total;
+	 				var ramFre = dev_json.ram_free;
+	 				var ramPerc = Math.round(((ramTot-ramFre)/ramTot)*100);
+
+	 				$("#"+uuid+"_rammbar").width(ramPerc+"%");
+	 				$("#"+uuid+"_ramtxt").html(ramPerc+"%");
+	 				$("#"+uuid+"_ramtotal").html(ramTot);
+	 				$("#"+uuid+"_ramfree").html(ramFre);
+
 	 			}
 	 		});
 	 	}
