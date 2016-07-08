@@ -79,6 +79,10 @@ class Device extends Controller
         return view("ajax.device-list-config",["devices" => $devices]);
     }
 
+    /*
+        This will return the view with all the devices shown. 
+        TODO : Moving that totally to AJAX ? 
+    */
     public function listDevicesCard() {
         $devices = DB::table("DEVICE")->get();
 
@@ -93,6 +97,11 @@ class Device extends Controller
         return $device->data;
     }
 
+    /*
+        This will return the json with all the devices and their cleaned data
+        This is to be used on the API entry point. 
+        Takes no arguments
+    */
     public function listDevicesRaw() {
         $devices = DB::table("DEVICE")->get();
         $devices_array = array();
@@ -101,9 +110,11 @@ class Device extends Controller
         }
         return json_encode($devices_array);
     }
-    //TODO
+
     public function exist($id) {
-        return true;
+        $possible_device = DB::table("DEVICE")->where("uuid",$id)->first();
+
+        return isset($possible_device->id);
     }
 
     public function cleanDeviceData($device) {
