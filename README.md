@@ -4,13 +4,13 @@ Hubble is a simple monitoring platform for Windows and Linux clients. (Server or
 This is basically a server with an API and the differents companions (clients) post to that API. 
 
 Even though all of this tool is still very much work in progress, you can still use it : 
-- Clone the repo and host the Server somewhere (You can use the vagrant box and expose the port 80)
+- Clone the repo and host the Server somewhere (Documentation will come soon)
 - Generate a UID from the HubbleWeb interface (in /config)
 - Launch the client setup the API endpoint and the UID
 - The data should be updated and viewable on HubbleWeb :)
 
 ## Server
-The server use **Laravel 5** and a VagrantFile is provided
+The server use **Laravel 5** and a VagrantFile is provided for development purpose.
 
 The SQL script used during provisionning is hubble_schema.sql and the bash provisioning script is initialize.sh
 - Version : **PRE ALPHA 0.01**
@@ -22,6 +22,13 @@ The SQL script used during provisionning is hubble_schema.sql and the bash provi
 - MaterializeCSS
 - FontAwesome
 
+##### TODO : 
+
+- Moving the Vagrant config to a separate repo
+- Providing a Docker image for the server
+- Creating a separate repo for the documentation website
+- Moving the SQL script to a DatabaseSeeding class
+
 ##### Screenshots : 
 
 **Home page**
@@ -30,10 +37,7 @@ The SQL script used during provisionning is hubble_schema.sql and the bash provi
 **Config page**
 ![Config page](http://i.imgur.com/ka5eAJz.png)
 
-## Windows Client
-The Windows Client use C# and the Windows API
-Binary are provided (In the releases), If you want to compile it yourself, go ahead, you should have everything you need in Clients/Win
-- Version : **0.1**
+##### Clients
 
-## Linux Client
-Todo
+- [Windows](https://github.com/apcros/HubbleWin)
+- Linux (Not yet available)
