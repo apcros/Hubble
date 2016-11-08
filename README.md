@@ -25,10 +25,10 @@ The SQL script used during provisionning is hubble_schema.sql and the bash provi
 ##### Screenshots : 
 
 **Home page**
-![Home page](https://raw.github.com/apcros/Hubble/master/home.png)
+![Home page](http://i.imgur.com/0YMDiCj.png)
 
 **Config page**
-![Config page](https://raw.github.com/apcros/Hubble/master/config.png)
+![Config page](http://i.imgur.com/ka5eAJz.png)
 
 ## Windows Client
 The Windows Client use C# and the Windows API
