@@ -24,9 +24,8 @@ The SQL script used during provisionning is hubble_schema.sql and the bash provi
 
 ##### TODO : 
 
-- Moving the Vagrant config to a separate repo
 - Providing a Docker image for the server
-- Creating a separate repo for the documentation website
+- Apiary docs
 - Moving the SQL script to a DatabaseSeeding class
 
 ##### Screenshots : 
