@@ -30,7 +30,7 @@
           <div class="footer-copyright">
             <div class="container">
             © 2016 Apcros
-            <a class="white-text right"><b>PRE-ALPHA</b> 0.01</a>
+            <a class="white-text right"><b>{{ config('app.hubble_version') }}</b></a>
             </div>
           </div>
       </footer>

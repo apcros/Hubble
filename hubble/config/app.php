@@ -41,6 +41,11 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+
+    // ====
+    'hubble_version' => 'PRE-ALPHA 0.02',
+    // ====
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
