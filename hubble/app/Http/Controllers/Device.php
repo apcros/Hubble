@@ -14,9 +14,9 @@ class Device extends Controller
     public function updateData($id, Request $r) {
         if($this->exist($id)) {
             $json = json_encode($r->all());
-            DB::table("DEVICE")->where('uuid',$id)->update([
+            DB::table("devices")->where('id',$id)->update([
                 'data' => $json,
-                'last_updated'  => DB::raw("now()"),
+                'updated_at' => \Carbon\Carbon::now(),
                 ]);
             return "OK";
         } else {
@@ -27,8 +27,8 @@ class Device extends Controller
 
     public function calculateTimout($device) {
        
-        if($device->last_updated != "") {
-            $dateTime = strtotime($device->last_updated);
+        if($device->updated_at != "") {
+            $dateTime = strtotime($device->updated_at);
             $timeNow = time();
             $timeDifference = $timeNow - $dateTime;
 
@@ -42,24 +42,22 @@ class Device extends Controller
     /*
         This will create a new device in db.
 
-        CREATE TABLE "DEVICE" (
-  "id" integer NOT NULL,
-  "uuid" text NOT NULL,
-  "name" text,
-  "data" json,
-  "last_updated" time
+        CREATE TABLE "devices" (
+          "uuid" text NOT NULL,
+          "name" text,
+          "data" json,
+          "last_updated" time
     */
     public function add(Request $r) {
         $device_name = $r->input("name");
         if(isset($device_name)) {
             $device_id = sha1(time().$device_name);
-
-            DB::table("DEVICE")->insert(
+            DB::table("devices")->insert(
                 [
-                    'uuid'          => $device_id,
-                    'name'          => $device_name,
+                    'id' =>  $device_id,
+                    'name' => $device_name
                 ]
-                );
+            );
             return $device_id;
 
         } else {
@@ -71,11 +69,11 @@ class Device extends Controller
         This will delete the device
     */
     public function del($id, Request $r) {
-        DB::table("DEVICE")->where("uuid",$id)->delete();
+        DB::table("devices")->where("id",$id)->delete();
     }
 
     public function listDevices() {
-        $devices = DB::table("DEVICE")->get();
+        $devices = DB::table("devices")->get();
         return view("ajax.device-list-config",["devices" => $devices]);
     }
 
@@ -84,7 +82,7 @@ class Device extends Controller
         TODO : Moving that totally to AJAX ? 
     */
     public function listDevicesCard() {
-        $devices = DB::table("DEVICE")->get();
+        $devices = DB::table("devices")->get();
 
         foreach ($devices as $key => $device) {
             $devices[$key] = $this->cleanDeviceData($device);
@@ -93,7 +91,7 @@ class Device extends Controller
     }
 
     public function showData($id) {
-        $device = DB::table("DEVICE")->where('uuid',$id)->first();
+        $device = DB::table("devices")->where('id',$id)->first();
         return $device->data;
     }
 
@@ -103,16 +101,16 @@ class Device extends Controller
         Takes no arguments
     */
     public function listDevicesRaw() {
-        $devices = DB::table("DEVICE")->get();
+        $devices = DB::table("devices")->get();
         $devices_array = array();
         foreach ($devices as $key => $device) {
-            $devices_array[] = $device->uuid;
+            $devices_array[] = $device->id;
         }
         return json_encode($devices_array);
     }
 
     public function exist($id) {
-        $possible_device = DB::table("DEVICE")->where("uuid",$id)->first();
+        $possible_device = DB::table("devices")->where("id",$id)->first();
 
         return isset($possible_device->id);
     }
