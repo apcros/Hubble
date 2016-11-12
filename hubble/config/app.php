@@ -43,7 +43,7 @@ return [
 
 
     // ====
-    'hubble_version' => 'PRE-ALPHA 0.02',
+    'hubble_version' => 'PRE-ALPHA 0.10',
     // ====
 
     /*

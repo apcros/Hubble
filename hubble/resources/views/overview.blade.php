@@ -41,24 +41,24 @@
 	        <br>
 
 	        <p>
-	        	<b>CPU Usage (<b id="{{$device->uuid}}_cputxt">{{ isset($device->data->cpu_usage) ? $device->data->cpu_usage : '' }}%</b>)</b>
+				<b>CPU Usage (<b id="{{$device->id}}_cputxt">{{ isset($device->data->cpu_usage) ? $device->data->cpu_usage : '' }}%</b>)</b>
 				<div class="progress blue lighten-3">
-		      		<div id="{{$device->uuid}}_cpubar"class="determinate blue" style="width: {{ isset($device->data->cpu_usage) ? $device->data->cpu_usage : '' }}%"></div>
+					<div id="{{$device->id}}_cpubar"class="determinate blue" style="width: {{ isset($device->data->cpu_usage) ? $device->data->cpu_usage : '' }}%"></div>
 		  		</div>
 	        </p>
 	        <p>
-	        	<b>RAM Usage (<b id="{{$device->uuid}}_ramtxt">{{ isset($device->data->ram_percent) ? $device->data->ram_percent : '' }}%</b>)</b>
-	        	<i id="{{$device->uuid}}_ramfree">{{ isset($device->data->ram_free) ? $device->data->ram_free : '?' }}</i> MB free on <i id="{{$device->uuid}}_ramtotal">{{ isset($device->data->ram_total) ? $device->data->ram_total : '?' }}</i> MB
+				<b>RAM Usage (<b id="{{$device->id}}_ramtxt">{{ isset($device->data->ram_percent) ? $device->data->ram_percent : '' }}%</b>)</b>
+				<i id="{{$device->id}}_ramfree">{{ isset($device->data->ram_free) ? $device->data->ram_free : '?' }}</i> MB free on <i id="{{$device->id}}_ramtotal">{{ isset($device->data->ram_total) ? $device->data->ram_total : '?' }}</i> MB
 				<div class="progress blue lighten-3">
-		      		<div id="{{$device->uuid}}_rammbar" class="determinate blue" style="width: {{ isset($device->data->ram_percent) ? $device->data->ram_percent : '' }}%"></div>
+				<div id="{{$device->id}}_rammbar" class="determinate blue" style="width: {{ isset($device->data->ram_percent) ? $device->data->ram_percent : '' }}%"></div>
 		  		</div>
 	        </p>
 	        <br>
 	        <ul class="collection ">
 	        		 <li class="collection-item"><i class="fa fa-barcode left"></i><b>Computer Name :</b> {{ isset($device->data->name) ? $device->data->name : '' }}</li>
 	        		 <li class="collection-item"><i class="fa fa-laptop left"></i><b>OS :</b> {{ isset($device->data->os_version) ? $device->data->os_version : '' }}</li>
-				     <li class="collection-item"><i class="fa fa-key left"></i><b>UID :</b> {{ $device->uuid }}</li>
-				     <li class="collection-item"><i class="fa fa-clock-o left"></i><b>Last Updated :</b> {{ $device->last_updated }}</li>
+				     <li class="collection-item"><i class="fa fa-key left"></i><b>UID :</b> {{ $device->id }}</li>
+				     <li class="collection-item"><i class="fa fa-clock-o left"></i><b>Last Updated :</b> {{ $device->updated_at }}</li>
 				     <li class="collection-item"><i class="fa fa-bolt left"></i><b>Client version :</b> <i>{{ isset($device->data->client_version) ? $device->data->client_version : '' }} </i></li>
 				   </ul>
 	      </div>
@@ -88,6 +88,7 @@
 
 	 	function updateOrCreateDevice(uuid) {
 			$.get("/api/v1/devices/"+uuid+"/latest",function(data) {
+				if(data == "") return;
 				var dev_json = $.parseJSON(data);
 	 			if($("#"+uuid).length){
 	 			//Create the device
