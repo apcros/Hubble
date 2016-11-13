@@ -10,10 +10,15 @@ Even though all of this tool is still very much work in progress, you can still 
 - The data should be updated and viewable on HubbleWeb :)
 
 ## Server
-The server use **Laravel 5** and a VagrantFile is provided for development purpose.
+The server use **Laravel 5**
+To create the database, just run : 
 
-The SQL script used during provisionning is hubble_schema.sql and the bash provisioning script is initialize.sh
-- Version : **PRE ALPHA 0.01**
+  php artisan migrate
+  
+If you want to spin-up a dev environement, just look at [HubbleBox](https://github.com/apcros/HubbleBox). 
+
+
+- Version : **PRE ALPHA 0.10**
 
 ##### Tools/Libs used :
 - Laravel 5
@@ -26,7 +31,6 @@ The SQL script used during provisionning is hubble_schema.sql and the bash provi
 
 - Providing a Docker image for the server
 - Apiary docs
-- Moving the SQL script to a DatabaseSeeding class
 
 ##### Screenshots : 
 
