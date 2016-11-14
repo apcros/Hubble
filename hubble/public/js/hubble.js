@@ -40,7 +40,7 @@ function updateDevice(uuid, data) {
 	$("#cpubar_"+uuid).width(json.cpu_usage+"%");
 	applyProgressBarColor(json.cpu_usage,"cpubar_"+uuid);
 
-	var ram_percent = Math.round((json.ram_free/json.ram_total)*100);
+	var ram_percent = 100 - Math.round((json.ram_free/json.ram_total)*100);
 	applyProgressBarColor(ram_percent,"rambar_"+uuid);
 	
 	$("#ram_"+uuid).html(ram_percent+"%");
@@ -50,19 +50,17 @@ function updateDevice(uuid, data) {
 	$("#name_"+uuid).html(json.name);
 	$("#os_"+uuid).html(json.os_version);
 	$("#clientversion_"+uuid).html(json.client_version);
-
-	console.log(json);
 }
 
 function applyProgressBarColor(value, barid) {
 	if(value <= 25) {
-		$("#"+barid).attr("determinate blue");
+		$("#"+barid).attr("class","determinate blue");
 	}
 	if(value > 25 && value < 80) {
-		$("#"+barid).attr("determinate orange");
+		$("#"+barid).attr("class","determinate orange");
 	}
 	if(value >= 80) {
-		$("#"+barid).attr("determinate red");
+		$("#"+barid).attr("class","determinate red");
 	}
 }
 /*{  
