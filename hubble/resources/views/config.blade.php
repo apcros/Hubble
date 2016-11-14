@@ -33,27 +33,22 @@ function loadList() {
 }
 function addNewDevice() {
 	var device_name = $("#device_name").val();
-	$.post( "/ajax/devices/add", { name: device_name })
+	$.post( "/api/v1/devices/add", { name: device_name })
   	.done(function( data ) {
-  		if(data != "ERROR") {
-  			Materialize.toast('Device added ! UUID : '+data, 3000, 'green');
-  		} else {
-  			Materialize.toast('Error : '+data, 3000, 'red');
-  		}
+      if(data != "") {
+        var json = JSON.parse(data);
+        console.log(json);
+        if(json.status == 'ok') {
+          Materialize.toast(json.message, 3000, 'green');
+        } else {
+          Materialize.toast(json.message, 3000, 'red');
+        }
+      } else {
+        Materialize.toast("Error : API returned an empty response", 3000, 'red');
+      }
   		loadList();
-    	 
   	});
+}
 
-}
-function delDevice(uuid) {
-	$.ajax({
-    url: '/ajax/devices/'+uuid+'/delete',
-    type: 'DELETE',
-    success: function(result) {
-        Materialize.toast('Device deleted !', 3000, 'orange');
-        loadList();
-    }
-});
-}
 </script>
 @endsection

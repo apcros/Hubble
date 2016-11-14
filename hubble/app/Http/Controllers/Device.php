@@ -18,9 +18,9 @@ class Device extends Controller
                 'data' => $json,
                 'updated_at' => \Carbon\Carbon::now(),
                 ]);
-            return "OK";
+            return $this->json_response("ok", "$id has been updated");
         } else {
-            return "INCORRECT_DEVICE";
+            return $this->json_response("error", "incorrect device id : $id");
         }
 
     }
@@ -41,12 +41,6 @@ class Device extends Controller
     }
     /*
         This will create a new device in db.
-
-        CREATE TABLE "devices" (
-          "uuid" text NOT NULL,
-          "name" text,
-          "data" json,
-          "last_updated" time
     */
     public function add(Request $r) {
         $device_name = $r->input("name");
@@ -58,10 +52,10 @@ class Device extends Controller
                     'name' => $device_name
                 ]
             );
-            return $device_id;
+            return $this->json_response("ok", "device $device_name added with success",['id' => $device_id]);
 
         } else {
-            return "ERROR";
+            return $this->json_response("error","Unexpeted error ocurred while adding $device_name");
         }
     }   
 
@@ -70,23 +64,12 @@ class Device extends Controller
     */
     public function del($id, Request $r) {
         DB::table("devices")->where("id",$id)->delete();
+        return $this->json_response("ok","deleted $id with success");
     }
 
     public function listDevices() {
         $devices = DB::table("devices")->get();
         return view("ajax.device-list-config",["devices" => $devices]);
-    }
-
-    /*
-        This will return the view with all the devices shown. 
-    */
-    public function listDevicesCard() {
-        $devices = DB::table("devices")->get();
-
-        foreach ($devices as $key => $device) {
-            $devices[$key] = $this->cleanDeviceData($device);
-        }
-        return view("overview",["devices" => $devices]);
     }
 
     public function showData($id) {
@@ -136,7 +119,7 @@ class Device extends Controller
     }
 
     public function cleanDeviceData($device) {
-        $device->data = json_decode($device->data); //This is to allow blade template to access differents part of the json
+        $device->data = json_decode($device->data);
          $device->timeout_since = 0;
         if(isset($device->data)) {
         $device->timeout_since = $this->calculateTimout($device);
@@ -148,6 +131,15 @@ class Device extends Controller
         }
         }
         return $device;
+    }
+
+    //TODO Refactor and move all that crap to Api.php
+    public function json_response($status,$message, $data = []) {
+        return json_encode(array(
+            'status'  =>  $status,
+            'message' => $message,
+            'data'    => $data
+        ));
     }
 
 
