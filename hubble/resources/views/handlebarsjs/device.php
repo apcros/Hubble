@@ -5,7 +5,10 @@
 		        <span class="card-title black-text" id="devicename_{{uuid}}"></span>
 		        <br>
 		       	<div class="card-panel" id="info_{{uuid}}"></div>
-		       	<ul class="collapsible" data-collapsible="accordion" id="drives_{{uuid}}"></ul>
+		       	<div class="divider"></div>
+		       	<b>Drives :</b>
+		       	<div id="drives_{{uuid}}"></div>
+		       	<div class="divider"></div>
 		        <br>
 		        <p>
 					<b>CPU Usage (<b id="cpu_{{uuid}}">0%</b>)</b>

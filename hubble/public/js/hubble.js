@@ -31,27 +31,59 @@ function updateDevice(uuid, data) {
 		return;
 	};
 	var json = $.parseJSON(data);
-	$("#devicename_"+uuid).html(json.name);
-	
-	$("#info_"+uuid).attr("class","card-panel blue");
-	$("#info_"+uuid).html("In sync");
+	$("#devicename_"+uuid).html(json.hubble_name);
 
+	if(json.status == "ok") {
+		$("#info_"+uuid).attr("class","card-panel blue");
+	} else if (json.status == "warning") {
+		$("#info_"+uuid).attr("class","card-panel orange");
+		return; // The rest is not going to be set so no point in trying
+	} else {
+		$("#info_"+uuid).attr("class","card-panel red");
+	}
+
+	$("#info_"+uuid).html(json.message);
 	$("#cpu_"+uuid).html(json.cpu_usage+"%");
-	$("#cpubar_"+uuid).width(json.cpu_usage+"%");
 	applyProgressBarColor(json.cpu_usage,"cpubar_"+uuid);
 
 	var ram_percent = 100 - Math.round((json.ram_free/json.ram_total)*100);
 	applyProgressBarColor(ram_percent,"rambar_"+uuid);
 	
 	$("#ram_"+uuid).html(ram_percent+"%");
-	$("#rambar_"+uuid).width(ram_percent+"%");
 	$("#ramfree_"+uuid).html(json.ram_free);
 	$("#ramtotal_"+uuid).html(json.ram_total);
 	$("#name_"+uuid).html(json.name);
 	$("#os_"+uuid).html(json.os_version);
 	$("#clientversion_"+uuid).html(json.client_version);
-}
+	$("#lastupdated_"+uuid).html(json.last_updated);
 
+	for (var i = 0; i < json.drives.length; i++) {
+		console.log(json.drives[i]);
+		updateOrCreateDrive(uuid,i,json.drives[i]);
+	};
+}
+function updateOrCreateDrive(uuid,id,data) {
+	if(!$("#hdd_"+uuid+"_"+id).length) {
+			var source = $("#drive-template").html();
+			var template = Handlebars.compile(source);
+			var context = {"uuid": uuid, "hddid": id};
+			var html = template(context);
+			$("#drives_"+uuid).append(html);
+	} else {
+			updateDrive(uuid+"_"+id,data);
+	}
+}
+function updateDrive(id, data) {
+	$("#hdd_"+id).html(data.name);
+	$("#hddname_"+id).html(data.label);
+	$("#hddformat_"+id).html(data.format);
+	$("#freespace_"+id).html(data.free_space);
+	$("#totalspace_"+id).html(data.total_space);
+
+	var percent = 100- Math.round((data.free_space/data.total_space)*100);
+	applyProgressBarColor(percent,"hddbar_"+id);
+
+}
 function applyProgressBarColor(value, barid) {
 	if(value <= 25) {
 		$("#"+barid).attr("class","determinate blue");
@@ -62,38 +94,5 @@ function applyProgressBarColor(value, barid) {
 	if(value >= 80) {
 		$("#"+barid).attr("class","determinate red");
 	}
+	$("#"+barid).width(value+"%");
 }
-/*{  
-   "name":"MERCURY",
-   "os_version":"Microsoft Windows NT 6.2.9200.0",
-   "client_version":"ALPHA\/0.31\/WIN",
-   "ram_total":"8110",
-   "ram_free":"1366",
-   "cpu_usage":"15",
-   "drives":[  
-      {  
-         "format":"NTFS",
-         "free_space":"69763",
-         "total_space":"199770",
-         "name":"C:\\",
-         "label":"",
-         "type":"Fixed"
-      },
-      {  
-         "format":"NTFS",
-         "free_space":"191313",
-         "total_space":"645293",
-         "name":"E:\\",
-         "label":"Stockage",
-         "type":"Fixed"
-      },
-      {  
-         "format":"NTFS",
-         "free_space":"342765",
-         "total_space":"437314",
-         "name":"Z:\\",
-         "label":"files",
-         "type":"Network"
-      }
-   ]
-}*/
