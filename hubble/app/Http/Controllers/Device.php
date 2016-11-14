@@ -79,7 +79,6 @@ class Device extends Controller
 
     /*
         This will return the view with all the devices shown. 
-        TODO : Moving that totally to AJAX ? 
     */
     public function listDevicesCard() {
         $devices = DB::table("devices")->get();
@@ -92,7 +91,28 @@ class Device extends Controller
 
     public function showData($id) {
         $device = DB::table("devices")->where('id',$id)->first();
-        return $device->data;
+        $json = $device->data;
+        if(empty($json)) $json = "{}";
+
+        $device_data = json_decode($json);
+
+        $timeout = $this->calculateTimout($device);
+        if($timeout > 0) {
+            $device_data->status = "error";
+            $device_data->message = "Timeout since $timeout seconds !";
+        } else {
+            $device_data->status = "ok";
+            $device_data->message = "In sync";
+        }
+
+        if(!isset($device->updated_at)) {
+            $device_data->status = "warning";
+            $device_data->message = "Waiting for first connection...";
+        }
+
+        $device_data->last_updated = $device->updated_at;
+        $device_data->hubble_name = $device->name;
+        return json_encode($device_data);
     }
 
     /*
