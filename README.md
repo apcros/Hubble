@@ -1,5 +1,11 @@
 # Hubble
 
+#### Staging
+[![Build Status](https://travis-ci.org/apcros/Hubble.svg?branch=staging)](https://travis-ci.org/apcros/Hubble)
+
+#### Master
+[![Build Status](https://travis-ci.org/apcros/Hubble.svg?branch=master)](https://travis-ci.org/apcros/Hubble)
+
 Hubble is a simple monitoring platform for Windows and Linux clients. (Server or not.) Greatly inspired by Zabbix, Observium and others.
 This is basically a server with an API and the differents companions (clients) post to that API. 
 
@@ -18,7 +24,7 @@ To create the database, just run :
 If you want to spin-up a dev environement, just look at [HubbleBox](https://github.com/apcros/HubbleBox). 
 
 
-- Version : **PRE ALPHA 0.10**
+- Version : **PRE ALPHA 0.23**
 
 ##### Tools/Libs used :
 - Laravel 5
@@ -26,6 +32,7 @@ If you want to spin-up a dev environement, just look at [HubbleBox](https://gith
 - Vagrant
 - MaterializeCSS
 - FontAwesome
+- HandlebarsJs
 
 ##### TODO : 
 

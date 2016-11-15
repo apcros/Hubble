@@ -37,6 +37,7 @@ function updateDevice(uuid, data) {
 		$("#info_"+uuid).attr("class","card-panel blue");
 	} else if (json.status == "warning") {
 		$("#info_"+uuid).attr("class","card-panel orange");
+		$("#info_"+uuid).html(json.message);
 		return; // The rest is not going to be set so no point in trying
 	} else {
 		$("#info_"+uuid).attr("class","card-panel red");
@@ -95,4 +96,15 @@ function applyProgressBarColor(value, barid) {
 		$("#"+barid).attr("class","determinate red");
 	}
 	$("#"+barid).width(value+"%");
+}
+
+function delDevice(uuid) {
+	$.ajax({
+    url: '/api/v1/devices/'+uuid+'/delete',
+    type: 'DELETE',
+    success: function(result) {
+        Materialize.toast('Device deleted !', 3000, 'orange');
+        loadList();
+    }
+});
 }
