@@ -1,6 +1,6 @@
 language: php
 before_script: cd hubble
-install: composer install
+install: composer install hubble/
 php:
   - '5.4'
   - '5.5'
