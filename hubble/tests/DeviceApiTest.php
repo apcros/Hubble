@@ -25,11 +25,45 @@ class DeviceApiTest extends TestCase
     }
 
     public function testUpdateDevice() {
-        //TODO
+        $json = $this->addDevice("dummy1337_up");
+        $response = $this->call('POST','/api/v1/devices/'.$json->data->id.'/latest',['
+            {
+               "name":"MERCURY",
+               "os_version":"The os name",
+               "client_version":"Unit test",
+               "ram_total":"8110",
+               "ram_free":"1636",
+               "cpu_usage":"4",
+               "drives":[
+                  {
+                     "format":"NTFS",
+                     "free_space":"68306548",
+                     "total_space":"46546464564",
+                     "name":"C:\\",
+                     "label":"",
+                     "type":"Fixed"
+                  },
+                  {
+                     "format":"NTFS",
+                     "free_space":"45464",
+                     "total_space":"645256464593",
+                     "name":"D:\\",
+                     "label":"",
+                     "type":"Fixed"
+                  },
+               ]
+            }']);
+
+        $response_json = json_decode($response->content());
+        $this->assertEquals('ok',$response_json->status);
     }
 
     public function testFetchDevice() {
-        //TODO
+        $json = $this->addDevice("dummy1337_fetch");
+        $response = $this->call('GET','/api/v1/devices/'.$json->data->id.'/latest');
+        $response_json = json_decode($response->content());
+        $this->assertEquals('warning',$response_json->status);
+        $this->assertEquals('Waiting for first connection...',$response_json->message);
     }
 
     private function addDevice($name) {
