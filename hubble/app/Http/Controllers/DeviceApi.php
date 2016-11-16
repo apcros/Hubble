@@ -21,19 +21,25 @@ class DeviceApi extends Controller
 
         if($this->deviceExists($id)) {
             $json = json_encode($r->all());
-            DB::table("devices")->where('id',$id)->update([
+            $query_status = DB::table("devices")->where('id',$id)->update([
                 'data' => $json,
                 'updated_at' => \Carbon\Carbon::now(),
                 ]);
+
+            Log::info("$id has been updated by ".$r->ip());
+            Log::debug($r->all());
+
             return $this->json_response("ok", "$id has been updated");
+
         } else {
+            Log::warning("An attempt to update an unknown device ($id) has been made by ".$r->ip());
             return $this->json_response("error", "incorrect device id : $id");
         }
     }
 
     public function createDevice(Request $r) {
         $device_name = $r->input("name");
-        if(isset($device_name)) {
+        if(!empty($device_name)) {
             $device_id = $this->generateDeviceUID();
             DB::table("devices")->insert(
                 [
@@ -41,18 +47,22 @@ class DeviceApi extends Controller
                     'name' => $device_name
                 ]
             );
+            Log::info("$device_name was added with id $device_id by ".$r->ip());
             return $this->json_response("ok", "device $device_name added with success",['id' => $device_id]);
 
         } else {
-            return $this->json_response("error","Unexpeted error ocurred while adding $device_name");
+            return $this->json_response("error","name is mandatory");
         }
     }
 
-    public function deleteDevice($id) {
+    public function deleteDevice($id, Request $r) {
         if($this->deviceExists($id)) {
             DB::table("devices")->where("id",$id)->delete();
+
+            Log::info("$id was deleted by ".$r->ip());
             return $this->json_response("ok","deleted $id with success");
         } else {
+            Log::warning("An attempt to delete an unknown device ($id) has been made by ".$r->ip());
             return $this->json_response("error", "incorrect device id : $id");
         }
     }
