@@ -6,19 +6,24 @@
 |--------------------------------------------------------------------------
 */
 
-Route::post('/api/v1/devices/{device_uuid}/latest', 'Device@updateData');
-Route::post('/api/v1/devices/add','Device@add');
+//Device API routes
+Route::post('/api/v1/devices/{device_uuid}/latest', 'DeviceApi@updateDevice');
+Route::post('/api/v1/devices/add','DeviceApi@createDevice');
 
-Route::get('/api/v1/devices/{device_uuid}/latest', 'Device@showData');
-Route::get('/api/v1/devices/list', 'Device@listDevicesRaw');
+Route::get('/api/v1/devices/{device_uuid}/latest', 'DeviceApi@getDeviceData');
+Route::get('/api/v1/devices/list', 'DeviceApi@listDevices');
+
+Route::delete('/api/v1/devices/{device_uuid}/delete','DeviceApi@deleteDevice');
+
+//General API
 Route::get('/api/v1/healthcheck', 'Api@healthcheck');
 
-Route::delete('/api/v1/devices/{device_uuid}/delete','Device@del');
 
 
-Route::get('/ajax/devices/list','Device@listDevices');
+//Ajax routes, to be removed
+Route::get('/ajax/devices/list','DeviceApi@listDevicesView');
 
-
+//Front end routes
 Route::get('/', function () {
 	return view('overview');
 });
