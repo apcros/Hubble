@@ -4,19 +4,19 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class DeviceTest extends TestCase
+class DeviceApiTest extends TestCase
 {
     use DatabaseMigrations;
 
     public function testAddDevice() {
-        $json = $this->_addDevice("dummy1337_add");
+        $json = $this->addDevice("dummy1337_add");
         $this->assertEquals('device dummy1337_add added with success',$json->message);
         $this->assertEquals('ok',$json->status);
         $this->seeInDatabase('devices', ['name' => 'dummy1337_add', 'id' => $json->data->id]);
     }
 
     public function testRemoveDevice() {
-        $json = $this->_addDevice("dummy1337_del");
+        $json = $this->addDevice("dummy1337_del");
         $response = $this->call('DELETE','/api/v1/devices/'.$json->data->id.'/delete');
         $response_json = json_decode($response->content());
         $this->assertEquals('ok',$response_json->status);
@@ -32,7 +32,7 @@ class DeviceTest extends TestCase
         //TODO
     }
 
-    public function _addDevice($name) {
+    private function addDevice($name) {
         $response = $this->call('POST','/api/v1/devices/add',['name' => $name]);
         return json_decode($response->content());
     }
