@@ -28,6 +28,10 @@ Route::get('/', function () {
 	return view('overview');
 });
 
-Route::get('/config',function() {
-	return view('config');
+Route::get('/devices',function() {
+	return view('devices-config');
+});
+
+Route::get('/settings',function()  {
+	return view('settings');
 });

@@ -17,15 +17,18 @@
      <nav>
         <div class="nav-wrapper indigo">
           <a href="/" class="brand-logo">&nbsp; Hubble</a>
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="/config">Config</a></li>
-            <li><a href="/logout">Logout</a></li>
+          <a href="#" data-activates="mobile-btn" class="button-collapse"><i class="fa fa-bars" aria-hidden="true"></i></a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="/devices"><i class="fa fa-server left" aria-hidden="true"></i>Devices</a></li>
+            <li><a href="/settings"><i class="fa fa-cogs left" aria-hidden="true"></i>Settings</a></li>
+          </ul>
+          <ul class="side-nav" id="mobile-btn">
+            <li><a href="/devices">Devices</a></li>
+            <li><a href="/settings">Settings</a></li>
           </ul>
         </div>
       </nav>
-      <div class='container'>
         @yield('content')
-      </div>
     <footer class="page-footer indigo">
           <div class="container">
           </div>
@@ -36,5 +39,10 @@
             </div>
           </div>
       </footer>
+      <script type="text/javascript">
+        $(document).ready(function(){
+           $(".button-collapse").sideNav();
+        });
+      </script>
     </body>
 </html>
