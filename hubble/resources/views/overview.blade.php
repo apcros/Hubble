@@ -4,7 +4,7 @@
 @section('content')
 @include('handlebarsjs.device')
 @include('handlebarsjs.drive')
-	<div id="servers">
+	<div id="servers" class="row">
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
