@@ -9,14 +9,6 @@ use App\Http\Controllers\Controller;
 class DeviceApi extends Controller
 {
 
-    /* TODO : This should be removed and replaced by
-        a ajax call to listDevices + a handlebarjs template
-    */
-    public function listDevicesView() {
-        $devices = DB::table("devices")->get();
-        return view("ajax.device-list-config",["devices" => $devices]);
-    }
-
     public function updateDevice($id, Request $r) {
 
         if($this->deviceExists($id)) {
@@ -69,6 +61,9 @@ class DeviceApi extends Controller
 
     public function getDeviceData($id) {
         $device = DB::table("devices")->where('id',$id)->first();
+        if(!$device){
+            return $this->json_response("error","device $id does not exist");
+        }
         $json = $device->data;
         if(empty($json)) $json = "{}";
 
@@ -97,7 +92,10 @@ class DeviceApi extends Controller
         $devices = DB::table("devices")->get();
         $devices_array = array();
         foreach ($devices as $key => $device) {
-            $devices_array[] = $device->id;
+            $devices_array[] = array(
+                'id'    => $device->id,
+                'name'  => $device->name
+            );
         }
         return json_encode($devices_array);      
     }
