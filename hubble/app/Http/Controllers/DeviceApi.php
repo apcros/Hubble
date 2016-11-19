@@ -9,28 +9,24 @@ use App\Http\Controllers\Controller;
 class DeviceApi extends Controller
 {
 
-    /* TODO : This should be removed and replaced by
-        a ajax call to listDevices + a handlebarjs template
-    */
-    public function listDevicesView() {
-        $devices = DB::table("devices")->get();
-        return view("ajax.device-list-config",["devices" => $devices]);
-    }
-
     public function updateDevice($id, Request $r) {
+        $device_to_update = DB::table("devices")->where('id',$id)->first();
 
-        if($this->deviceExists($id)) {
-            $json = json_encode($r->all());
-            $query_status = DB::table("devices")->where('id',$id)->update([
-                'data' => $json,
-                'updated_at' => \Carbon\Carbon::now(),
-                ]);
+        if(isset($device_to_update)) {
+            if($device_to_update->key == $r->header("HUBBLE-DEVICE-KEY")) {
+                $json = json_encode($r->all());
+                $query_status = DB::table("devices")->where('id',$id)->update([
+                    'data' => $json,
+                    'updated_at' => \Carbon\Carbon::now(),
+                    ]);
 
-            Log::info("$id has been updated by ".$r->ip());
-            Log::debug($r->all());
+                Log::info("$id has been updated by ".$r->ip());
 
-            return $this->json_response("ok", "$id has been updated");
-
+                return $this->json_response("ok", "$id has been updated");
+            } else {
+                Log::warning("An attempt to update $id with an invalid key has been made by ".$r->ip());
+                return $this->json_response("error","invalid HUBBLE_DEVICE_KEY");
+            }
         } else {
             Log::warning("An attempt to update an unknown device ($id) has been made by ".$r->ip());
             return $this->json_response("error", "incorrect device id : $id");
@@ -44,7 +40,8 @@ class DeviceApi extends Controller
             DB::table("devices")->insert(
                 [
                     'id' =>  $device_id,
-                    'name' => $device_name
+                    'name' => $device_name,
+                    'key' => str_random(50),
                 ]
             );
             Log::info("$device_name was added with id $device_id by ".$r->ip());
@@ -69,6 +66,9 @@ class DeviceApi extends Controller
 
     public function getDeviceData($id) {
         $device = DB::table("devices")->where('id',$id)->first();
+        if(!$device){
+            return $this->json_response("error","device $id does not exist");
+        }
         $json = $device->data;
         if(empty($json)) $json = "{}";
 
@@ -90,16 +90,26 @@ class DeviceApi extends Controller
 
         $device_data->last_updated = $device->updated_at;
         $device_data->hubble_name = $device->name;
-        return json_encode($device_data);       
+        return json_encode($device_data);
     }
 
     public function listDevices() {
         $devices = DB::table("devices")->get();
         $devices_array = array();
         foreach ($devices as $key => $device) {
-            $devices_array[] = $device->id;
+            if(isset($device->updated_at)){
+                $status = "Last updated at ".$device->updated_at;
+            } else {
+                $status = "No data yet";
+            }
+            $devices_array[] = array(
+                'id'     => $device->id,
+                'name'   => $device->name,
+                'key'    => $device->key,
+                'status' => $status
+            );
         }
-        return json_encode($devices_array);      
+        return json_encode($devices_array);
     }
 
     private function generateDeviceUID() {

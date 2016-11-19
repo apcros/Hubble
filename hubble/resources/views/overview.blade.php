@@ -8,7 +8,6 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
-		   $('.collapsible').collapsible();
 		   		window.setInterval(function(){
 				    updateDevicesList();
 				},1000);

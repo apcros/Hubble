@@ -17,6 +17,7 @@ class HubbleBase extends Migration
             $table->primary('id');
             $table->string('name');
             $table->json('data')->nullable();
+            $table->string('key');
             $table->timestamps();
         });
 

@@ -18,11 +18,6 @@ Route::delete('/api/v1/devices/{device_uuid}/delete','DeviceApi@deleteDevice');
 //General API
 Route::get('/api/v1/healthcheck', 'Api@healthcheck');
 
-
-
-//Ajax routes, to be removed
-Route::get('/ajax/devices/list','DeviceApi@listDevicesView');
-
 //Front end routes
 Route::get('/', function () {
 	return view('overview');
