@@ -11,20 +11,20 @@ This is basically a server with an API and the differents companions (clients) p
 
 Even though all of this tool is still very much work in progress, you can still use it : 
 - Clone the repo and host the Server somewhere (Documentation will come soon)
-- Generate a UID from the HubbleWeb interface (in /config)
-- Launch the client setup the API endpoint and the UID
+- Add a new device from the HubbleWeb interface (in /devices)
+- Launch the client setup the API endpoint, the UID and the device Key.
 - The data should be updated and viewable on HubbleWeb :)
 
 ## Server
 The server use **Laravel 5**
 To create the database, just run : 
 
-  php artisan migrate
+    php artisan migrate
   
 If you want to spin-up a dev environement, just look at [HubbleBox](https://github.com/apcros/HubbleBox). 
 
 
-- Version : **PRE ALPHA 0.23**
+- Version : **ALPHA 0.30**
 
 ##### Tools/Libs used :
 - Laravel 5
@@ -42,10 +42,10 @@ If you want to spin-up a dev environement, just look at [HubbleBox](https://gith
 ##### Screenshots : 
 
 **Home page**
-![Home page](http://i.imgur.com/0YMDiCj.png)
+![Home page](http://i.imgur.com/3NJpBWx.png)
 
-**Config page**
-![Config page](http://i.imgur.com/ka5eAJz.png)
+**Devices page**
+![Devices page](http://i.imgur.com/hvZMY98.png)
 
 ##### Clients
 
