@@ -24,8 +24,11 @@ class DeviceApiTest extends TestCase
         $this->notSeeInDatabase('devices',['name' => 'dummy1337_del', 'id' => $json->data->id]);
     }
 
-    public function testUpdateDevice() {
+    public function testUpdateDeviceWrongKey() {
         $json = $this->addDevice("dummy1337_up");
+        $response_devices = $this->call('GET','/api/v1/devices/list');
+        $json_devices = json_decode($response_devices->content());
+
         $response = $this->call('POST','/api/v1/devices/'.$json->data->id.'/latest',['
             {
                "name":"MERCURY",
@@ -55,7 +58,12 @@ class DeviceApiTest extends TestCase
             }']);
 
         $response_json = json_decode($response->content());
-        $this->assertEquals('ok',$response_json->status);
+        $this->assertEquals('error',$response_json->status);
+        $this->assertEquals('invalid HUBBLE_DEVICE_KEY',$response_json->message);
+    }
+
+    public function testUpdateDevice() {
+      //TODO
     }
 
     public function testFetchDevice() {
