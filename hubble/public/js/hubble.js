@@ -137,9 +137,10 @@ function loadDeviceList() {
         if(!$("#"+current_device.id).length) {
             var source = $("#device-list-template").html();
             var template = Handlebars.compile(source);
-            var context = {"uuid": current_device.id, "name": current_device.name};
+            var context = {"uuid": current_device.id, "name": current_device.name, "key": current_device.key, "status": current_device.status};
             var html = template(context);
             $("#devices_list").append(html);
+            $('.collapsible').collapsible();
         }
     };
   })

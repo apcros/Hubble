@@ -32,9 +32,6 @@
 		        		 	<i class="fa fa-laptop left"></i><b>OS :</b><i id="os_{{uuid}}"></i>
 		        		 </li>
 					     <li class="collection-item">
-					     	<i class="fa fa-key left"></i><b>UID :</b><i>{{uuid}}</i>
-					     </li>
-					     <li class="collection-item">
 					     	<i class="fa fa-clock-o left"></i><b>Last Updated :</b><i id="lastupdated_{{uuid}}"></i>
 					     </li>
 					     <li class="collection-item">
