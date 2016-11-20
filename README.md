@@ -27,17 +27,22 @@ If you want to spin-up a dev environement, just look at [HubbleBox](https://gith
 - Version : **ALPHA 0.30**
 
 ##### Tools/Libs used :
-- Laravel 5
-- PostgreSQL
-- Vagrant
-- MaterializeCSS
-- FontAwesome
-- HandlebarsJs
+- [Laravel 5](https://laravel.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [MaterializeCSS](http://materializecss.com/)
+- [FontAwesome](http://fontawesome.io/)
+- [HandlebarsJs](http://handlebarsjs.com/)
 
 ##### TODO : 
 
 - Providing a Docker image for the server
 - Apiary docs
+- Handle the device type (Windows/Linux/Unknown) 
+- Update the DB schema to allow data history to be kept
+- Linux Client
+- Add roles (mysql, apache..etc)
+- Add accounts
+- Add a codebase monitoring
 
 ##### Screenshots : 
 
