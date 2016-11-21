@@ -106,10 +106,23 @@ class DeviceApi extends Controller
                 'id'     => $device->id,
                 'name'   => $device->name,
                 'key'    => $device->key,
+                'system'   => $this->getDeviceSystem($device),
                 'status' => $status
             );
         }
         return json_encode($devices_array);
+    }
+
+    private function getDeviceSystem($device) {
+        $json = json_decode($device->data);
+        if(isset($json)) {
+            if(isset($json->client_version)) {
+                $client_parts = explode("/", $json->client_version);
+                return htmlspecialchars(end($client_parts));
+            }
+        } else {
+            return "Unknown";
+        }
     }
 
     private function generateDeviceUID() {
