@@ -76,8 +76,8 @@ class DeviceApi extends Controller
 
         $timeout = $this->getDeviceTimeout($device);
         if($timeout > 0) {
-            $device_data->status = "error";
-            $device_data->message = "Timeout since $timeout seconds !";
+            $device_data->status = "timeout";
+            $device_data->message = $timeout;
         } else {
             $device_data->status = "ok";
             $device_data->message = "In sync";

@@ -37,7 +37,6 @@ If you want to spin-up a dev environement, just look at [HubbleBox](https://gith
 
 - Providing a Docker image for the server
 - Apiary docs
-- Handle the device type (Windows/Linux/Unknown) 
 - Update the DB schema to allow data history to be kept
 - Linux Client
 - Add roles (mysql, apache..etc)
