@@ -22,6 +22,33 @@ function updateOrCreateDevice(device_uuid) {
 
     });
 }
+/*
+    Not even going to pretend it's my code :
+    http://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
+*/
+function timeSince(seconds) {
+    var interval = Math.floor(seconds / 31536000);
+    if (interval > 1) {
+        return interval + " years";
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+        return interval + " months";
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+        return interval + " days";
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+        return interval + " hours";
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+        return interval + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
+}
 
 function updateDevice(uuid, data) {
     if(data == "") {
@@ -38,11 +65,14 @@ function updateDevice(uuid, data) {
         $("#info_"+uuid).attr("class","card-panel orange");
         $("#info_"+uuid).html(json.message);
         return; // The rest is not going to be set so no point in trying
+    } else if (json.status == "timeout") {
+        $("#info_"+uuid).html("Last refresh was "+timeSince(json.message)+" ago !");
+        $("#info_"+uuid).attr("class","card-panel red");
     } else {
         $("#info_"+uuid).attr("class","card-panel red");
+        $("#info_"+uuid).html(json.message);
     }
 
-    $("#info_"+uuid).html(json.message);
     $("#cpu_"+uuid).html(json.cpu_usage+"%");
     applyProgressBarColor(json.cpu_usage,"cpubar_"+uuid);
 
