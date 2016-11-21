@@ -1,10 +1,12 @@
 # Hubble
 
-#### Staging
+##### Staging
 [![Build Status](https://travis-ci.org/apcros/Hubble.svg?branch=staging)](https://travis-ci.org/apcros/Hubble)
 
-#### Master
+##### Master
 [![Build Status](https://travis-ci.org/apcros/Hubble.svg?branch=master)](https://travis-ci.org/apcros/Hubble)
+
+## Introduction
 
 Hubble is a simple monitoring platform for Windows and Linux clients. (Server or not.) Greatly inspired by Zabbix, Observium and others.
 This is basically a server with an API and the differents companions (clients) post to that API. 
@@ -15,6 +17,10 @@ Even though all of this tool is still very much work in progress, you can still 
 - Launch the client setup the API endpoint, the UID and the device Key.
 - The data should be updated and viewable on HubbleWeb :)
 
+## API Documentation
+
+The API Documentation is available on apiary : http://docs.hubbleweb.apiary.io/
+
 ## Server
 The server use **Laravel 5**
 To create the database, just run : 
@@ -24,7 +30,7 @@ To create the database, just run :
 If you want to spin-up a dev environement, just look at [HubbleBox](https://github.com/apcros/HubbleBox). 
 
 
-- Version : **ALPHA 0.30**
+- Version : **ALPHA 0.32**
 
 ##### Tools/Libs used :
 - [Laravel 5](https://laravel.com/)
@@ -36,7 +42,6 @@ If you want to spin-up a dev environement, just look at [HubbleBox](https://gith
 ##### TODO : 
 
 - Providing a Docker image for the server
-- Apiary docs
 - Update the DB schema to allow data history to be kept
 - Linux Client
 - Add roles (mysql, apache..etc)
