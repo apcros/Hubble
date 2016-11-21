@@ -137,11 +137,28 @@ function loadDeviceList() {
         if(!$("#"+current_device.id).length) {
             var source = $("#device-list-template").html();
             var template = Handlebars.compile(source);
-            var context = {"uuid": current_device.id, "name": current_device.name, "key": current_device.key, "status": current_device.status};
+            var context = {
+                "uuid": current_device.id,
+                "name": current_device.name,
+                "key": current_device.key,
+                "status": current_device.status,
+                "device-icon": getIconForDevice(current_device.system)
+            };
             var html = template(context);
             $("#devices_list").append(html);
             $('.collapsible').collapsible();
         }
     };
   })
+}
+//Handlebars.js offer no easy way to compare a variable to a string
+//In order to keep the template simple it's the simplest.
+function getIconForDevice(system) {
+    if (system == "WIN") {
+        return "fa-windows";
+    } else if (system == "LINUX") {
+        return "fa-linux";
+    } else {
+        return "fa-question-circle";
+    }
 }
