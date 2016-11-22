@@ -21,6 +21,12 @@ Even though all of this tool is still very much work in progress, you can still 
 
 The API Documentation is available on apiary : http://docs.hubbleweb.apiary.io/
 
+## Project Kanban : 
+
+You can track the project progress on taiga (If you have issue to raise, still use GitHub tracking for now.): 
+https://tree.taiga.io/project/apcros-hubble/kanban
+
+
 ## Server
 The server use **Laravel 5**
 To create the database, just run : 
@@ -38,15 +44,6 @@ If you want to spin-up a dev environement, just look at [HubbleBox](https://gith
 - [MaterializeCSS](http://materializecss.com/)
 - [FontAwesome](http://fontawesome.io/)
 - [HandlebarsJs](http://handlebarsjs.com/)
-
-##### TODO : 
-
-- Providing a Docker image for the server
-- Update the DB schema to allow data history to be kept
-- Linux Client
-- Add roles (mysql, apache..etc)
-- Add accounts
-- Add a codebase monitoring
 
 ##### Screenshots : 
 
