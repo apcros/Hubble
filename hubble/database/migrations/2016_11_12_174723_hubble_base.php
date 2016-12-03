@@ -21,6 +21,13 @@ class HubbleBase extends Migration
             $table->timestamps();
         });
 
+        Schema::create('devices-data', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string("device_id");
+            $table->json("data");
+            $table->timestamps();
+        });
+
     }
     /**
      * Reverse the migrations.
@@ -30,5 +37,6 @@ class HubbleBase extends Migration
     public function down()
     {
         Schema::drop('devices');
+        Schema::drop('devices-data');
     }
 }

@@ -15,9 +15,11 @@ class DeviceApi extends Controller
         if(isset($device_to_update)) {
             if($device_to_update->key == $r->header("HUBBLE-DEVICE-KEY")) {
                 $json = json_encode($r->all());
-                $query_status = DB::table("devices")->where('id',$id)->update([
+                $query_status = DB::table("devices-data")->insert([
                     'data' => $json,
+                    'created_at' => \Carbon\Carbon::now(),
                     'updated_at' => \Carbon\Carbon::now(),
+                    'device_id' => $id
                     ]);
 
                 Log::info("$id has been updated by ".$r->ip());
@@ -69,12 +71,15 @@ class DeviceApi extends Controller
         if(!$device){
             return $this->json_response("error","device $id does not exist");
         }
-        $json = $device->data;
-        if(empty($json)) $json = "{}";
+        $latest_data = DB::table("devices-data")->where('device_id',$id)->latest()->first();
+        if(isset($latest_data->data)){
+            $json = $latest_data->data;
+            $device_data = json_decode($json);
+        } else {
+            $device_data = json_decode("{}");
+        }
 
-        $device_data = json_decode($json);
-
-        $timeout = $this->getDeviceTimeout($device);
+        $timeout = $this->getDeviceTimeout($latest_data);
         if($timeout > 0) {
             $device_data->status = "timeout";
             $device_data->message = $timeout;
@@ -83,12 +88,13 @@ class DeviceApi extends Controller
             $device_data->message = "In sync";
         }
 
-        if(!isset($device->updated_at)) {
+        if(!isset($latest_data->created_at)) {
             $device_data->status = "warning";
             $device_data->message = "Waiting for first connection...";
+        } else {
+             $device_data->last_updated = $latest_data->created_at;
         }
 
-        $device_data->last_updated = $device->updated_at;
         $device_data->hubble_name = $device->name;
         return json_encode($device_data);
     }
@@ -96,9 +102,11 @@ class DeviceApi extends Controller
     public function listDevices() {
         $devices = DB::table("devices")->get();
         $devices_array = array();
+
         foreach ($devices as $key => $device) {
-            if(isset($device->updated_at)){
-                $status = "Last updated at ".$device->updated_at;
+            $latest_data = DB::table("devices-data")->where('device_id',$device->id)->latest()->first();
+            if(isset($latest_data->updated_at)){
+                $status = "Last updated at ".$latest_data->updated_at;
             } else {
                 $status = "No data yet";
             }
@@ -106,16 +114,17 @@ class DeviceApi extends Controller
                 'id'     => $device->id,
                 'name'   => $device->name,
                 'key'    => $device->key,
-                'system'   => $this->getDeviceSystem($device),
+                'system'   => $this->getDeviceSystem($latest_data),
                 'status' => $status
             );
         }
         return json_encode($devices_array);
     }
 
-    private function getDeviceSystem($device) {
-        $json = json_decode($device->data);
-        if(isset($json)) {
+    private function getDeviceSystem($latest_data) {
+
+        if(isset($latest_data->data)) {
+            $json = json_decode($latest_data->data);
             if(isset($json->client_version)) {
                 $client_parts = explode("/", $json->client_version);
                 return htmlspecialchars(end($client_parts));
@@ -128,9 +137,9 @@ class DeviceApi extends Controller
     private function generateDeviceUID() {
         return sha1(time().str_random(10));
     }
-    private function getDeviceTimeout($device) {
-        if($device->updated_at != "") {
-            $dateTime = strtotime($device->updated_at);
+    private function getDeviceTimeout($latest_data) {
+        if(isset($latest_data->created_at)) {
+            $dateTime = strtotime($latest_data->created_at);
             $timeNow = time();
             $timeDifference = $timeNow - $dateTime;
 
