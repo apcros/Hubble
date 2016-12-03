@@ -61,6 +61,7 @@ function updateDevice(uuid, data) {
 
     if(json.status == "ok") {
         $("#info_"+uuid).attr("class","card-panel blue");
+        $("#info_"+uuid).html(json.message);
     } else if (json.status == "warning") {
         $("#info_"+uuid).attr("class","card-panel orange");
         $("#info_"+uuid).html(json.message);
