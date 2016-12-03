@@ -56,4 +56,4 @@ If you want to spin-up a dev environement, just look at [HubbleBox](https://gith
 ##### Clients
 
 - [Windows](https://github.com/apcros/HubbleWin)
-- Linux (Not yet available)
+- [Linux](https://github.com/apcros/HubbleNux)
