@@ -66,7 +66,7 @@ class DeviceApi extends Controller
         }
     }
 
-    public function getDeviceData($id) {
+    public function getLatestDeviceData($id) {
         $device = DB::table("devices")->where('id',$id)->first();
         if(!$device){
             return $this->json_response("error","device $id does not exist");
@@ -99,6 +99,33 @@ class DeviceApi extends Controller
         return json_encode($device_data);
     }
 
+    /*
+     TODO : Include limits
+     TODO : Include max granulatity (Nb of data/sec )
+    */
+    public function getDeviceDataWithRange($id, Request $r) {
+        if($this->deviceExists($id)) {
+            $json = $r->all();
+
+            if(!isset($json['from'])) {
+                return $this->json_response("error", "You need to specify at least from parameter");
+            }
+
+            $from = date('Y-m-d H:m:s',$json['from']);
+
+            if(!isset($json['to'])){
+                $to = date('Y-m-d H:m:s',time());
+            } else {
+                $to = date('Y-m-d H:m:s',$json['to']);
+            }
+
+            $data_rows = DB::table("devices-data")->select('created_at','data')->where("device_id",$id)->whereBetween("created_at", [$from, $to])->orderBy('created_at')->get();
+            return $this->json_response("ok","$id data between $from and $to",$data_rows);
+
+        } else {
+            return $this->json_response("error","device $id does not exist");
+        }
+    }
     public function listDevices() {
         $devices = DB::table("devices")->get();
         $devices_array = array();

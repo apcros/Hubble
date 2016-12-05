@@ -10,7 +10,9 @@
 Route::post('/api/v1/devices/{device_uuid}/latest', 'DeviceApi@updateDevice');
 Route::post('/api/v1/devices/add','DeviceApi@createDevice');
 
-Route::get('/api/v1/devices/{device_uuid}/latest', 'DeviceApi@getDeviceData');
+Route::get('/api/v1/devices/{device_uuid}/latest', 'DeviceApi@getLatestDeviceData');
+Route::post('/api/v1/devices/{device_uuid}/data','DeviceApi@getDeviceDataWithRange');
+
 Route::get('/api/v1/devices/list', 'DeviceApi@listDevices');
 
 Route::delete('/api/v1/devices/{device_uuid}/delete','DeviceApi@deleteDevice');
