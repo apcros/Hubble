@@ -25,6 +25,8 @@ Route::get('/', function () {
 	return view('overview');
 });
 
+Route::get('/details/{device_uuid}','Metrics@showDetailedDevice');
+
 Route::get('/devices',function() {
 	return view('devices-config');
 });
